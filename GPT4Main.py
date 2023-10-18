@@ -4,21 +4,35 @@ from dotenv import load_dotenv
 
 # Load the environment variables from dev.env
 load_dotenv("dev.env")
-# Set up your API key
-openai.api_key = os.getenv("API_KEY")
+conversation_history = []
+while(True):
 
-# If you belong to multiple organizations and want to specify one:
-# openai.organization = "YOUR_ORG_ID"
+    # Set up your API key
+    openai.api_key = os.getenv("API_KEY")
 
-# Make the API request
-response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{
+    query = input("Send message for AI response: ")
+    # Add the assistant's reply to the conversation history
+    conversation_history.append({
         "role": "user",
-        "content": "Give me a two sentence summary on the meaning of life"
-    }]
-)
+        "content": f"{query}"
+    })
+    # Make the API request
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=conversation_history
+    )
 
-# Extracting the response content
-assistant_message = response['choices'][0]['message']['content']
-print(assistant_message)
+    print(conversation_history)
+    print(response)
+
+
+    # Extracting the response content
+    assistant_message = response['choices'][0]['message']['content']
+
+    # Add the assistant's reply to the conversation history
+    conversation_history.append({
+        "role": "assistant",
+        "content": assistant_message
+    })
+    print(assistant_message)
+    
