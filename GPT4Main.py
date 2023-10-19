@@ -1,6 +1,10 @@
 import os
 import openai
+import AgentFunctions
+import re
+from AgentFunctions import *
 from dotenv import load_dotenv
+
 
 # Load the environment variables from dev.env
 load_dotenv("dev.env")
@@ -35,4 +39,6 @@ while(True):
         "content": assistant_message
     })
     print(assistant_message)
-    
+    for function_name, function_callable in FUNCTION_MAPPINGS.items():
+        if function_name in assistant_message:
+            function_callable()
