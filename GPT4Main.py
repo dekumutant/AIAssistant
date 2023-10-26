@@ -2,6 +2,7 @@ import os
 import openai
 import AgentFunctions
 import re
+from Classes.Command import *
 from AgentFunctions import *
 from dotenv import load_dotenv
 
